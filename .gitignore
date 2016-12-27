@@ -1,0 +1,15 @@
+#Temporaries
+~*
+*~
+*.swp
+
+#Build files
+build/
+
+#QT creator files
+*.creator
+*.files
+*.config
+*.includes
+*.creator.user
+data/
