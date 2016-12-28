@@ -5,6 +5,7 @@
 #include <string.h>
 #include <math.h>
 #include <mpi.h>
+#include <omp.h>
 
 // Domain size.
 const double A = 2.0;
@@ -304,6 +305,7 @@ int main(int argc, char * argv[])
     for(counter=1; counter<=SDINum; counter++)
     {
 // The residual vector r(k) = Ax(k)-f is calculating ...
+        #pragma omp parallel for private(i)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
                 ResVect[NX*j+i] = LeftPart(SolVect,i,j)-RHS_Vect[NX*j+i];
@@ -356,6 +358,7 @@ int main(int argc, char * argv[])
 // The value of product (r(k),r(k)) is calculating ...
         sp = 0.0;
         double local_sp = 0.0;
+        #pragma omp parallel for  private(i) reduction(+:local_sp)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
                 local_sp += ResVect[NX*j+i]*ResVect[NX*j+i]*hx(i)*hy(j);
@@ -364,6 +367,7 @@ int main(int argc, char * argv[])
 
 // The value of product sp = (Ar(k),r(k)) is calculating ...
         local_sp = 0.0;
+        #pragma omp parallel for private(i) reduction(+:local_sp)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
                 local_sp += LeftPart(ResVect,i,j)*ResVect[NX*j+i]*hx(i)*hy(j);
@@ -373,6 +377,7 @@ int main(int argc, char * argv[])
 // The x(k+1) is calculating ...
         err = 0.0;
         double local_err = 0.0;
+        #pragma omp parallel for  private(i, NewValue) reduction(max:local_err)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
             {
@@ -469,6 +474,7 @@ int main(int argc, char * argv[])
     for(counter=1; counter<=CGMNum; counter++)
     {
     // The residual vector r(k) is calculating ...
+        #pragma omp parallel for  private(i)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
                 ResVect[NX*j+i] = LeftPart(SolVect,i,j)-RHS_Vect[NX*j+i];
@@ -521,6 +527,7 @@ int main(int argc, char * argv[])
     // The value of product (Ar(k),g(k-1)) is calculating ...
         alpha = 0.0;
         double local_alpha = 0.0;
+        #pragma omp parallel for  private(i) reduction(+:local_alpha)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
                 local_alpha += LeftPart(ResVect,i,j)*BasisVect[NX*j+i]*hx(i)*hy(j);
@@ -528,6 +535,7 @@ int main(int argc, char * argv[])
         alpha = alpha/sp;
 
     // The new basis vector g(k) is being calculated ...
+        #pragma omp parallel for  private(i)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
                 BasisVect[NX*j+i] = ResVect[NX*j+i]-alpha*BasisVect[NX*j+i];
@@ -579,6 +587,7 @@ int main(int argc, char * argv[])
     // The value of product (r(k),g(k)) is being calculated ...
         tau = 0.0;
         double local_tau = 0.0;
+        #pragma omp parallel for  private(i) reduction(+:local_tau)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
                 local_tau += ResVect[NX*j+i]*BasisVect[NX*j+i]*hx(i)*hy(j);
@@ -587,6 +596,7 @@ int main(int argc, char * argv[])
     // The value of product sp = (Ag(k),g(k)) is being calculated ...
         sp = 0.0;
         double local_sp = 0.0;
+        #pragma omp parallel for  private(i) reduction(+:local_sp)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
                 local_sp += LeftPart(BasisVect,i,j)*BasisVect[NX*j+i]*hx(i)*hy(j);
@@ -596,6 +606,7 @@ int main(int argc, char * argv[])
     // The x(k+1) is being calculated ...
         err = 0.0;
         double local_err = 0.0;
+        #pragma omp parallel for  private(i, NewValue) reduction(+:local_err)
         for(j=sY; j < fY; j++)
             for(i=sX; i < fX; i++)
             {

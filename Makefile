@@ -13,8 +13,8 @@ EXECUTABLE = $(BUILD_DIR)/poisson
 
 all: $(EXECUTABLE)
 
-debug: CPP_FLAGS += -DDEBUG
-debug: $(EXECUTABLE)
+openmp: C_FLAGS += -fopenmp
+openmp: $(EXECUTABLE)
 
 $(EXECUTABLE): $(SRCS) $(BUILD_DIR)
 	$(MPICC) $(C_FLAGS) $(SRCS) $(LD_FLAGS) -o $(EXECUTABLE)
