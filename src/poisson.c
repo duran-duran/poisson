@@ -78,8 +78,6 @@ int SplitFunction(int N0, int N1, int p)
 
 double Solution(double x,double y)
 {
-//    if (x < 0.0000001 || y < 0.0000001)
-//        return exp(1.0);
     return exp(1.0-x*x*y*y);
 }
 
@@ -121,6 +119,7 @@ int main(int argc, char * argv[])
     double sp, alpha, tau, NewValue, err;   // auxiliary values
     int SDINum, CGMNum;                     // the number of steep descent and CGM iterations.
     int counter;                            // the current iteration number.
+    double start, finish, elapsed;          // time marks
 
     int i,j;
     char str[127];
@@ -208,6 +207,8 @@ int main(int argc, char * argv[])
     }
 #endif
 
+    start = MPI_Wtime();
+
     // the cartesian topology of processes is being created ...
     MPI_Cart_create(MPI_COMM_WORLD, ndims, dims, periods, TRUE, &Grid_Comm);
     MPI_Comm_rank(Grid_Comm, &rank);
@@ -246,7 +247,6 @@ int main(int argc, char * argv[])
     MPI_Cart_shift(Grid_Comm, 1, 1, &down, &up);
 
 #ifdef Print
-    printf("!!! Coords: (%d, %d), starts: %d %d   fns: %d %d\n", Coords[0], Coords[1], sX, sY, fX, fY);
     printf("My Rank in Grid_Comm is %d. My topological coords is (%d,%d). Domain size is %d x %d nodes.\n"
            "My neighbours: left = %d, right = %d, down = %d, up = %d.\n",
            rank, Coords[0], Coords[1], n0, n1, left,right, down,up);
@@ -661,6 +661,12 @@ int main(int argc, char * argv[])
                 SolVect[NX*j+fX] = buff[j];
         }
 
+        if (err < 0.0001)
+        {
+            CGMNum = counter;
+            break;
+        }
+
         if(counter%Step == 0)
         {
             if (rank == 0)
@@ -688,6 +694,12 @@ int main(int argc, char * argv[])
         }
     }
 // the end of CGM iterations.
+
+    finish = MPI_Wtime();
+    elapsed = finish - start;
+
+    if (rank == 0)
+        printf("Total elapsed time: %fs\n", elapsed);
 
 // printing some results ...
     if (rank == 0)
