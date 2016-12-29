@@ -336,21 +336,21 @@ int main(int argc, char * argv[])
         //..and receive
         if (Coords[1] < (dims[1]-1)) // from up
         {
-            MPI_Recv(&ResVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, NULL);
+            MPI_Recv(&ResVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[1] > 0) // from down
         {
-            MPI_Recv(&ResVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, NULL);
+            MPI_Recv(&ResVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[0] > 0) // from left
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 ResVect[NX*j+(sX-1)] = buff[j];
         }
         if (Coords[0] < (dims[0]-1)) // from right
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 ResVect[NX*j+fX] = buff[j];
         }
@@ -413,21 +413,21 @@ int main(int argc, char * argv[])
         //..and receive
         if (Coords[1] < (dims[1]-1))
         {
-            MPI_Recv(&SolVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, NULL);
+            MPI_Recv(&SolVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[1] > 0)
         {
-            MPI_Recv(&SolVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, NULL);
+            MPI_Recv(&SolVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[0] > 0)
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 SolVect[NX*j+(sX-1)] = buff[j];
         }
         if (Coords[0] < (dims[0]-1))
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 SolVect[NX*j+fX] = buff[j];
         }
@@ -505,21 +505,21 @@ int main(int argc, char * argv[])
         //..and receive
         if (Coords[1] < (dims[1]-1))
         {
-            MPI_Recv(&ResVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, NULL);
+            MPI_Recv(&ResVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[1] > 0)
         {
-            MPI_Recv(&ResVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, NULL);
+            MPI_Recv(&ResVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[0] > 0)
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 ResVect[NX*j+(sX-1)] = buff[j];
         }
         if (Coords[0] < (dims[0]-1))
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 ResVect[NX*j+fX] = buff[j];
         }
@@ -565,21 +565,21 @@ int main(int argc, char * argv[])
         //..and receive
         if (Coords[1] < (dims[1]-1))
         {
-            MPI_Recv(&BasisVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, NULL);
+            MPI_Recv(&BasisVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[1] > 0)
         {
-            MPI_Recv(&BasisVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, NULL);
+            MPI_Recv(&BasisVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[0] > 0)
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 BasisVect[NX*j+(sX-1)] = buff[j];
         }
         if (Coords[0] < (dims[0]-1))
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 BasisVect[NX*j+fX] = buff[j];
         }
@@ -642,21 +642,21 @@ int main(int argc, char * argv[])
         //..and receive
         if (Coords[1] < (dims[1]-1))
         {
-            MPI_Recv(&SolVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, NULL);
+            MPI_Recv(&SolVect[NX*(fY)+sX], n0, MPI_DOUBLE, up, 2, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[1] > 0)
         {
-            MPI_Recv(&SolVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, NULL);
+            MPI_Recv(&SolVect[NX*(sY-1)+sX], n0, MPI_DOUBLE, down, 3, Grid_Comm, MPI_STATUS_IGNORE);
         }
         if (Coords[0] > 0)
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, left, 1, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 SolVect[NX*j+(sX-1)] = buff[j];
         }
         if (Coords[0] < (dims[0]-1))
         {
-            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, NULL);
+            MPI_Recv(&buff[sY], n1, MPI_DOUBLE, right, 4, Grid_Comm, MPI_STATUS_IGNORE);
             for(j=sY; j < fY; j++)
                 SolVect[NX*j+fX] = buff[j];
         }
